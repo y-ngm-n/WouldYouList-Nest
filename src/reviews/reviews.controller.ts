@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -25,5 +25,10 @@ export class ReviewsController {
     const reviewId = await this.reviewsService.create(createReviewDto, fileId);
     this.todosService.setReview(+todo, reviewId);
     console.log(+todo, fileId, reviewId);
+  }
+
+  @Get()
+  findAll() {
+    return this.reviewsService.findAll();
   }
 }

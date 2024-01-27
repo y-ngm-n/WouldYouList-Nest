@@ -25,4 +25,9 @@ export class ReviewsService {
     const result = await this.reviewsRepository.insert(review);
     return result.identifiers[0].id;
   }
+
+  async findAll() {
+    const result = await this.reviewsRepository.find();
+    return result;
+  }
 }
