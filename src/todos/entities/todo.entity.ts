@@ -34,5 +34,5 @@ export class Todo {
   state: boolean;
   
   @Column({ default: null })
-  review: number;
+  reviewId: number;
 }

@@ -41,6 +41,11 @@ export class TodosService {
     await this.todosRepository.update({ id }, { state: !(todo.state) });
   }
 
+  async setReview(id: number, reviewId: number) {
+    const todo = await this.todosRepository.findOneBy({ id });
+    await this.todosRepository.update({ id }, { reviewId });
+  }
+
   async remove(id: number): Promise<void> {
     await this.todosRepository.delete({ id });
   }

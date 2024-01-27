@@ -10,5 +10,6 @@ import { Todo } from './entities/todo.entity';
   ],
   controllers: [TodosController],
   providers: [TodosService],
+  exports: [TodosService]
 })
 export class TodosModule {}
