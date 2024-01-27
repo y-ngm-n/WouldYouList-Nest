@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { ToggleTodoDto } from './dto/toggle-todo.dto';
 
 @Controller('todos')
 export class TodosController {
@@ -34,8 +33,8 @@ export class TodosController {
   }
 
   @Patch("toggle/:id")
-  toggleState(@Param() id: number, @Body() toggleTodoDto: ToggleTodoDto): Promise<void> {
-    return this.todosService.toggleState(id, toggleTodoDto);
+  toggleState(@Param('id') id: number): Promise<void> {
+    return this.todosService.toggleState(id);
   }
 
   @Delete(':id')

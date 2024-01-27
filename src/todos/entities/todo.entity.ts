@@ -30,7 +30,7 @@ export class Todo {
   @Column()
   content: string;
 
-  @Column()
+  @Column({ default: false })
   state: boolean;
   
   @Column({ default: null })

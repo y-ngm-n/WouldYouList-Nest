@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Todo } from './entities/todo.entity';
 import { Repository } from 'typeorm';
-import { ToggleTodoDto } from './dto/toggle-todo.dto';
 
 @Injectable()
 export class TodosService {
@@ -37,8 +36,9 @@ export class TodosService {
     await this.todosRepository.update({ id }, updateTodoDto);
   }
 
-  async toggleState(id: number, todoToggleDto: ToggleTodoDto) {
-    await this.todosRepository.update({ id }, todoToggleDto);
+  async toggleState(id: number) {
+    const todo = await this.todosRepository.findOneBy({ id });
+    await this.todosRepository.update({ id }, { state: !(todo.state) });
   }
 
   async remove(id: number): Promise<void> {
