@@ -19,4 +19,8 @@ export class PhotosService {
     const result = await this.photosRepository.findOneBy({ id });
     return result.filePath;
   }
+
+  async remove(id: number) {
+    await this.photosRepository.delete({ id });
+  }
 }

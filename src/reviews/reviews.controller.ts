@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -50,5 +50,12 @@ export class ReviewsController {
       const fileId = (file) ? await this.photosService.create(file.location) : 1;
       return this.reviewsService.update(id, { fileId, ...updateReviewDto });
     }
+  }
+
+  @Delete(":id")
+  async remove(@Param("id") id: number) {
+    const review = await this.reviewsService.findOne(id);
+    if (review.fileId != 1) await this.photosService.remove(review.fileId);
+    return this.reviewsService.remove(id);
   }
 }
