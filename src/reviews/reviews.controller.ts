@@ -19,12 +19,12 @@ export class ReviewsController {
   async create(
     @Body() createReviewDto: CreateReviewDto,
     @UploadedFile() file: Express.MulterS3.File
-  ) {
+  ): Promise<number> {
     const { todo } = createReviewDto;
-    const fileId = await this.photosService.create(file.location);
+    const fileId = (file) ? await this.photosService.create(file.location) : 1;
     const reviewId = await this.reviewsService.create(createReviewDto, fileId);
     this.todosService.setReview(+todo, reviewId);
-    console.log(+todo, fileId, reviewId);
+    return reviewId;
   }
 
   @Get()
