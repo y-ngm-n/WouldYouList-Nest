@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { TodosService } from 'src/todos/todos.service';
+import { PhotosService } from 'src/photos/photos.service';
 
 type UpdateReviewType = {
   fileId?: number;
@@ -17,7 +19,9 @@ type UpdateReviewType = {
 export class ReviewsService {
   constructor(
     @InjectRepository(Review)
-    private reviewsRepository: Repository<Review>
+    private reviewsRepository: Repository<Review>,
+    private readonly todosService: TodosService,
+    private readonly photosService: PhotosService
   ) {}
 
   async create(createReviewDto: CreateReviewDto, fileId: number): Promise<number> {
@@ -35,9 +39,19 @@ export class ReviewsService {
     return result.identifiers[0].id;
   }
 
-  async findAll(): Promise<Review[]> {
+  async findAll() {
     const result = await this.reviewsRepository.find();
-    return result;
+    const reviews = await Promise.all(
+      result.map(async (review) => {
+        const todo = await this.todosService.findOne(review.todoId);
+        const photo = await this.photosService.findOne(review.fileId);
+        delete review.todoId;
+        delete review.fileId;
+        const data = { ...review, photo, todo };
+        return data;
+      })
+    );
+    return reviews;
   }
 
   async findOne(id: number): Promise<Review> {

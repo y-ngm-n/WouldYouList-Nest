@@ -22,6 +22,11 @@ export class TodosService {
     return result;
   }
 
+  async findOne(id: number): Promise<Todo> {
+    const result = await this.todosRepository.findOneBy({ id });
+    return result;
+  }
+
   async findNotDone() {
     const result = await this.todosRepository.findBy({ state: false });
     return result;

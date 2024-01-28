@@ -16,7 +16,4 @@ export class CreateTodoDto {
 
   @IsString()
   content: string;
-
-  @IsBoolean()
-  state: boolean;
 }
