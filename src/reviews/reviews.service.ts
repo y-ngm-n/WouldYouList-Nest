@@ -3,6 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { PhotosService } from 'src/photos/photos.service';
+
+type UpdateReviewType = {
+  fileId?: number;
+  title?: string;
+  date?: string;
+  content?: string;
+  place?: string;
+  expression?: string;
+};
 
 @Injectable()
 export class ReviewsService {
@@ -29,5 +39,9 @@ export class ReviewsService {
   async findAll() {
     const result = await this.reviewsRepository.find();
     return result;
+  }
+
+  async update(id: number, data: UpdateReviewType) {
+    await this.reviewsRepository.update({ id }, data);
   }
 }
